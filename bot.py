@@ -188,44 +188,6 @@ async def sts(_, m: Message):
         text=f"**Total Users in DB:** `{total_users}`",
         quote=True
     )
-
-#-------------AUTO_CAPTION_FEATURE------------------#
-@Bot.on_message(pyrogram.filters.channel)
-def edit_caption(bot, update: pyrogram.types.Message):
-  if (config.custom_caption):
-      motech, _ = get_file_details(update)
-      try:
-          try: update.edit(custom_caption.format(file_name=motech.file_name))
-          except pyrogram.errors.FloodWait as FloodWait:
-              asyncio.sleep(FloodWait.value)
-              update.edit(custom_caption.format(file_name=motech.file_name, mote))
-      except pyrogram.errors.MessageNotModified: pass 
-  else:
-      return
-
-def get_file_details(update: pyrogram.types.Message):
-  if update.media:
-    for message_type in (
-        "photo",
-        "animation",
-        "audio",
-        "document",
-        "video",
-        "video_note",
-        "voice",
-        # "contact",
-        # "dice",
-        # "poll",
-        # "location",
-        # "venue",
-        "sticker"
-    ):
-        obj = getattr(update, message_type)
-        if obj:
-            return obj, obj.file_id
-
-
-#________________________________________________________________________________#
 @Bot.on_message(filters.private & filters.command("ban_user") & filters.user(Config.BOT_OWNER))
 async def ban(c: Client, m: Message):
     
